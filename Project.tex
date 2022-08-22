@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb,amsmath,bm}
+
+\pagestyle{myheadings}
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\Large \bf Project}
+
+\medskip
+{\bf Due on August 7th, 2022}
+\end{center}
+\noindent
+Consider the following ordinary
+differential equation for $u$:
+\begin{equation}
+\label{de}
+-u''(x)+\pi^2 \cos^2(\pi x) u(x) = f(x)\ \ \ x \in [0,1]
+\end{equation}
+with boundary conditions:
+\begin{eqnarray}
+\label{bc}
+u(0) &=& 0, \nonumber \\
+u(1) &=& 0.
+\end{eqnarray}
+\begin{description}
+\item[1.] Consider
+$f(x) = \pi^2 \sin(\pi x) \cosh(\sin (\pi x) )$,
+and check that the function $u(x) = \sinh ( \sin (\pi x) )$ is the
+solution to the
+boundary value problem (BVP) (\ref{de})+(\ref{bc}).
+\item[2.] We want to solve this BVP
+numerically. We begin by
+discretizing the interval $[0,1]$. For this, consider the gridpoints:
+\begin{equation}
+x_i = i h,\ \ i=0,1,\dots,n+1,\  \ h=\frac{1}{n+1}.
+\end{equation}
+Note that $h_i = x_{i+1}-x_i = h$ for all $i$.  Now we approximate the
+second derivative. Show that if $g$ has four
+continuous derivatives, then
+\begin{equation}
+\label{approx}
+\frac{g_{i+1}-2g_i+g_{i-1}}{h^2} = g''_i + O(h^2),
+\end{equation}
+where $g_i = g(x_i)$.
+\item[3.] Consider now the linear system of equations
+\begin{equation}
+\label{system}
+- \frac{g_{i+1}-2g_i+g_{i-1}}{h^2}+\pi^2 \cos^2 (\pi x_i )\, g_i = f(x_i)\
+\ i=1,2,\dots,n.
+\end{equation}
+Show that this can be rewritten in matrix form as
+\[
+\bm{ A} \cdot \bm{ g} = \bm{ f},
+\]
+where $\bm{ g} = (g_1,\dots,g_{n})^T$,
+$\bm{ f} = (f_1,\dots,f_{n})^T$, and the matrix $\bm{ A}$ is
+tridiagonal, with entries:
+\begin{equation}
+a_{i,j} = \left \lbrace \begin{array}{cr} -\frac{1}{h^2}& |i-j|=1, \\
+	\frac{2}{h^2} + \pi^2 \cos^2(\pi x_i) & i=j, \\
+0& Otherwise. \end{array}
+\right .
+\end{equation}
+\item[4.] Show that Scheme  \eqref{system} is second-order accurate.
+\item[5.] Solve the system of equations
+(\ref{system}). Use the following values: $n=10$, $20$, $40$, $80$, $160$, $320$.
+For each $h=1/(n+1)$, compute the error
+\begin{equation}
+e(h) = \sup_{1\le i \le n} |g_i - u(x_i)|
+\end{equation}
+and do a log-log plot of $e(h)$, that is, plot $\log(e(h))$ as a
+function of $\log(h)$. Show, using this plot, that $e(h) = O(h^2)$,
+consistent with \textbf{4}.
+\item[6.] Consider a neural network solution in the following form
+\begin{equation}
+u_{\mathrm{NN}}(x) = x(1-x)\left(\sum_{i=1}^{n-1} u_i \sin(w_i x + b_i) \right),
+\end{equation}
+which satisfies the boundary condition. The loss function in the least-squares sense is
+\begin{equation}
+\sum_{i=1}^{n-1} \left( -u_{\mathrm{NN}}''(x_i)+\pi^2 \cos^2(\pi x_i) u_{\mathrm{NN}}(x_i) - f(x_i) \right)^2.
+\end{equation}
+Use Adam or stochastic gradient descent method to find the optimal set of parameters $\{u_i, w_i, b_i\}_{i=1}^{n-1}$.
+Use the following values: $n=10$, $20$, $40$, $80$, $160$, $320$. For each $n$, compute the error
+\begin{equation}
+e(n) = \sup_{1\le i \le n} |u_{\mathrm{NN}}(x_i) - u(x_i)|.
+\end{equation}
+What is the conclusion we can draw for the neural network solution? Compare this result with that of the second-order difference scheme.
+\end{description}
+
+Send your project with your name, your student ID to jingrunchen@ustc.edu.cn.
+
+\end{document}
